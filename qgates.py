@@ -1,9 +1,7 @@
 from qiskit import QuantumCircuit
-#Added Classical Gate OR, AND and XOR using Quantum Gates
+from qiskit_aer import AerSimulator
 
-def qnot(qc,input_registers):
-  qc.x(input_register)
-
+# Quantum AND gate
 def qand(qc,input_registers,output_register):
     if isinstance(input_registers, int):
         input_registers=[input_registers]
@@ -19,6 +17,7 @@ def qand(qc,input_registers,output_register):
     qc.mcx(input_registers,output_register)
     qc.barrier()
 
+# Quantum OR Gate
 def qor(qc,input_registers,output_register):
     if isinstance(input_registers, int):
         input_registers=[input_registers]
@@ -36,6 +35,7 @@ def qor(qc,input_registers,output_register):
     qc.x(output_register)
     qc.barrier()
 
+#Quantum XOR gate
 def qxor(qc,input_registers,output_register):
     if isinstance(input_registers, int):
         input_registers=[input_registers]
@@ -51,3 +51,10 @@ def qxor(qc,input_registers,output_register):
     for i in input_registers:
         qc.cx(i,output_register)
     qc.barrier()
+
+#Quantum Random Number Generator
+def qrand(n):
+    qc=QuantumCircuit(n,n)
+    qc.h(range(n))
+    qc.measure(range(n),range(n))
+    return AerSimulator().run(qc,shots=1,memory=True).result().get_memory()[0]
